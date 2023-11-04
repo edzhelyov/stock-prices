@@ -11,8 +11,8 @@ export class AppController {
   getMaxProfit(@Query() timeParams: TimeParams): object {
     const result = this.appService.getMaxProfit(timeParams.startTime, timeParams.endTime);
 
-    if ('error' in result) {
-      this.validationErrorResponse(result['error'] as string[]);
+    if ('errors' in result) {
+      this.validationErrorResponse(result['errors'] as string[]);
     }
     
     return result;

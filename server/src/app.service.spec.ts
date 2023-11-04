@@ -108,5 +108,37 @@ describe('AppService', () => {
       expect(result['buyTime']).toEqual(0);
       expect(result['sellTime']).toEqual(0);
     });
+
+    it('returns error if startTime is before than the beginning of the data period', () => {
+      service.updateData([
+          { buy: 10, sell: 20 },
+          { buy: 10, sell: 5 },
+        ],
+        10
+      );
+
+      const result = service.getMaxProfit(0, 1);
+
+      expect(result['errors']).toContain('startTime should not be lower than 10');
+    });
+
+    it('returns error if endTime is after than the end of the data period', () => {
+      service.updateData([
+          { buy: 10, sell: 20 },
+          { buy: 10, sell: 5 },
+        ],
+        10
+      );
+
+      const result = service.getMaxProfit(10, 12);
+
+      expect(result['errors']).toContain('endTime should not be greater than 11');
+    });
+
+    it('returns error if startTime is after endTime', () => {
+      const result = service.getMaxProfit(2, 1);
+
+      expect(result['errors']).toContain('startTime should be before endTime');
+    });
   });
 });

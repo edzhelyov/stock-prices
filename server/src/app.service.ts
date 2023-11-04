@@ -56,7 +56,7 @@ export class AppService {
       errors.push('startTime should be before endTime');
     }
     if (errors.length > 0) {
-      return { error: errors };
+      return { errors: errors };
     }
 
     const [shouldBuy, buyTime, sellTime] = this.calculateMaxProfit(startTime, endTime);

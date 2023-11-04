@@ -34,6 +34,14 @@ export class AppService {
     this.endTime = begintTime + data.length - 1;
   }
 
+  getBuyPrice(time: number): number {
+    return this.data[time - this.beginTime]['buy'];
+  }
+
+  getSellPrice(time: number): number {
+    return this.data[time - this.beginTime]['sell'];
+  }
+
   getMaxProfit(startTime: number, endTime: number): object {
     const errors = [];
 
@@ -51,11 +59,56 @@ export class AppService {
       return { error: errors };
     }
 
-    return {
-      buyTime: startTime,
-      buyPrice: this.data[startTime - this.beginTime]['buy'],
-      sellTime: endTime,
-      sellPrice: this.data[endTime - this.beginTime]['sell']
-    };
+    const [shouldBuy, buyTime, sellTime] = this.calculateMaxProfit(startTime, endTime);
+
+    if (shouldBuy) {
+      return {
+        shouldBuy: true,
+        buyTime: buyTime,
+        buyPrice: this.getBuyPrice(buyTime),
+        sellTime: sellTime,
+        sellPrice: this.getSellPrice(sellTime)
+      };
+    } else {
+      return {
+        shouldBuy: false,
+        buyTime: 0,
+        buyPrice: 0,
+        sellTime: 0,
+        sellPrice: 0
+      };
+    }
+
+  }
+
+  private calculateMaxProfit(startTime: number, endTime: number): [boolean, number, number] {
+    let maxProfit = 0;
+    let minPrice = Infinity;
+    let buyPosition = 0;
+    let sellPosition: number | null = null;
+    let currentBuyPosition = 0;
+
+    for (let i = startTime - this.beginTime; i <= endTime - this.beginTime; i++) {
+      const buyPrice = this.data[i].buy;
+      const sellPrice = this.data[i].sell;
+
+      const profit = sellPrice - minPrice;
+      if (profit > maxProfit) {
+        maxProfit = profit;
+        buyPosition = currentBuyPosition;
+        sellPosition = i;
+      }
+
+      if (buyPrice < minPrice) {
+        minPrice = buyPrice;
+        currentBuyPosition = i;
+      }
+    }
+
+    if (sellPosition !== null) {
+      return [true, this.beginTime + buyPosition, this.beginTime + sellPosition]
+    } else {
+      return [false, 0, 0]
+    }
   }
 }

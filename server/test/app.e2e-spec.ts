@@ -17,19 +17,27 @@ describe('AppController (e2e)', () => {
     await app.init();
 
     service = moduleFixture.get<AppService>(AppService);
-    service.updateData([{buy: 1, sell: 2}, {buy: 2, sell: 10}], 1672531200)
+    service.updateData([
+        {buy: 2, sell: 5},
+        {buy: 1, sell: 2},
+        {buy: 3, sell: 4},
+        {buy: 1, sell: 3}
+      ],
+      1672531200
+    )
   });
 
   describe(('/'), () => {
     const startTime = 1672531200;
-    const endTime = 1672531201;
+    const endTime = 1672531203;
 
     it('returns proper calculation', () => {
       const expectedResponse = {
-        "buyTime": startTime,
+        "shouldBuy": true,
+        "buyTime": 1672531201,
         "buyPrice": 1,
-        "sellTime": endTime,
-        "sellPrice": 10
+        "sellTime": 1672531202,
+        "sellPrice": 4
       };
 
       return request(app.getHttpServer())

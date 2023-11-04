@@ -8,7 +8,7 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Architecture and design trade offs
+## Architecture and design decisions
 
 * Use only e2e testing which gives us the best confidence the application is working and enable easy refactoring.
 

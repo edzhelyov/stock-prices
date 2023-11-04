@@ -10,7 +10,10 @@
 
 ## Architecture and design decisions
 
-* Use only e2e testing which gives us the best confidence the application is working and enable easy refactoring.
+All design decisions are influenced by the following two factors: I don't have any prior NestJS knowledge and I don't want to spend a lot of time on the task. With that in mind, I will try to understand the minimal context required to implement a basic NestJS, but some techniques might not be the best practices in the framework.
+Regardless, I want this code to be production ready, so it will follow proper separation of concerns.
+
+At the moment I use only e2e testing which gives us the best confidence the application is working and enable easy refactoring.
 
 ## Installation
 

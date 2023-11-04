@@ -2,9 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { AppService } from './../src/app.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let service: AppService;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -13,22 +15,21 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    service = moduleFixture.get<AppService>(AppService);
+    service.updateData([{buy: 1, sell: 2}, {buy: 2, sell: 10}], 1672531200)
   });
 
   describe(('/'), () => {
     const startTime = 1672531200;
-    const endTime = 1672531260;
-    const data = {
-      1672531200: 1,
-      1672531260: 10
-    }
+    const endTime = 1672531201;
 
     it('returns proper calculation', () => {
       const expectedResponse = {
         "buyTime": startTime,
-        "buyPrice": data[startTime],
+        "buyPrice": 1,
         "sellTime": endTime,
-        "sellPrice": data[endTime]
+        "sellPrice": 10
       };
 
       return request(app.getHttpServer())
@@ -82,6 +83,15 @@ describe('AppController (e2e)', () => {
       .expect(400)
       .then((response) => {
         expect(response.body.message).toContain(`endTime should not be greater than ${endTime}`);
+      });
+    });
+
+    it('returns 400 when startTime is not before endTime', () => {
+      return request(app.getHttpServer())
+      .get(`/?startTime=${startTime}&endTime=${startTime}`)
+      .expect(400)
+      .then((response) => {
+        expect(response.body.message).toContain(`startTime should be before endTime`);
       });
     });
   });

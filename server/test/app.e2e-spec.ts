@@ -27,7 +27,7 @@ describe('AppController (e2e)', () => {
     )
   });
 
-  describe(('/'), () => {
+  describe(('/api/max-profit'), () => {
     const startTime = 1672531200;
     const endTime = 1672531203;
 
@@ -41,14 +41,14 @@ describe('AppController (e2e)', () => {
       };
 
       return request(app.getHttpServer())
-        .get(`/?startTime=${startTime}&endTime=${endTime}`)
+        .get(`/api/max-profit?startTime=${startTime}&endTime=${endTime}`)
         .expect(200)
         .expect(expectedResponse);
     });
 
     it('returns 400 when startTime or endTime is missing', () => {
       return request(app.getHttpServer())
-      .get(`/`)
+      .get(`/api/max-profit`)
       .expect(400)
       .then((response) => {
         expect(response.body.message).toContain('startTime should not be empty');
@@ -58,7 +58,7 @@ describe('AppController (e2e)', () => {
 
     xit('returns 400 when startTime or endTime is empty', () => {
       return request(app.getHttpServer())
-      .get(`/?startTime=&endTime=`)
+      .get(`/api/max-profit?startTime=&endTime=`)
       .expect(400)
       .then((response) => {
         expect(response.body.message).toContain('startTime should not be empty');
@@ -68,7 +68,7 @@ describe('AppController (e2e)', () => {
 
     it('returns 400 when startTime or endTime is not a number', () => {
       return request(app.getHttpServer())
-      .get(`/?startTime=abc&endTime=def`)
+      .get(`/api/max-profit?startTime=abc&endTime=def`)
       .expect(400)
       .then((response) => {
         expect(response.body.message).toContain('startTime must be a number conforming to the specified constraints');
@@ -78,7 +78,7 @@ describe('AppController (e2e)', () => {
 
     it('returns 400 when startTime is before than the earliest data point', () => {
       return request(app.getHttpServer())
-      .get(`/?startTime=${startTime - 1}&endTime=${endTime}`)
+      .get(`/api/max-profit?startTime=${startTime - 1}&endTime=${endTime}`)
       .expect(400)
       .then((response) => {
         expect(response.body.message).toContain(`startTime should not be lower than ${startTime}`);
@@ -87,7 +87,7 @@ describe('AppController (e2e)', () => {
 
     it('returns 400 when endTime is after the latest data point', () => {
       return request(app.getHttpServer())
-      .get(`/?startTime=${startTime}&endTime=${endTime + 1}`)
+      .get(`/api/max-profit?startTime=${startTime}&endTime=${endTime + 1}`)
       .expect(400)
       .then((response) => {
         expect(response.body.message).toContain(`endTime should not be greater than ${endTime}`);
@@ -96,7 +96,7 @@ describe('AppController (e2e)', () => {
 
     it('returns 400 when startTime is not before endTime', () => {
       return request(app.getHttpServer())
-      .get(`/?startTime=${startTime}&endTime=${startTime}`)
+      .get(`/api/max-profit?startTime=${startTime}&endTime=${startTime}`)
       .expect(400)
       .then((response) => {
         expect(response.body.message).toContain(`startTime should be before endTime`);

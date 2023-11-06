@@ -6,7 +6,7 @@ import { TimeParams } from './time-params.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('/api/max-profit')
   @UsePipes(new ValidationPipe({ transform: true }))
   getMaxProfit(@Query() timeParams: TimeParams): object {
     const result = this.appService.getMaxProfit(timeParams.startTime, timeParams.endTime);

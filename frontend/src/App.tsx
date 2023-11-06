@@ -21,11 +21,9 @@ function App() {
     }
 
     const response = await fetch(`/api/max-profit?startTime=${startTime}&endTime=${endTime}`);
-    const response_body = await response.json();
 
-    if (!response.ok) {
-      setError(response_body);
-    } else {
+    if (response.ok) {
+      const response_body = await response.json();
       setData(response_body);
       setError(null);
 
@@ -35,6 +33,12 @@ function App() {
         setProfit(profit);
         setShares(shares);
       }
+    } else if(response.status === 400) {
+      const response_body = await response.json();
+
+      setError(response_body);
+    } else {
+      setError({message: ['Something went wrong with the server. Please try again later or contact support.']})
     }
   };
 

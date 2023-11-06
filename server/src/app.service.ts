@@ -22,7 +22,7 @@ export class AppService {
     { buy: 81, sell: 70 }, { buy: 64, sell: 27 }, { buy: 69, sell: 71 },
     { buy: 49, sell: 10 }, { buy: 15, sell: 28 }, { buy: 97, sell: 67 },
     { buy: 66, sell: 78 }, { buy: 37, sell: 95 }, { buy: 51, sell: 87 },
-    { buy: 91, sell: 69 }, { buy: 66, sell: 35 }, { buy: 20, sell: 31 },
+    { buy: 91, sell: 69 }, { buy: 66, sell: 35 }, { buy: 42, sell: 31 },
     { buy: 54, sell: 42 }
   ]
   beginTime = 1672531200;
@@ -81,8 +81,10 @@ export class AppService {
 
   }
 
+  // To find the max profit we need to find the combination of buy and sell prices that generate the max ROI
+  // where ROI = (investement / buy price) * sell price / investement; or ROI = sell price / buy price
   private calculateMaxProfit(startTime: number, endTime: number): [boolean, number, number] {
-    let maxProfit = 0;
+    let maxROI = 1;
     let minPrice = Infinity;
     let buyPosition = 0;
     let sellPosition: number | null = null;
@@ -92,9 +94,9 @@ export class AppService {
       const buyPrice = this.data[i].buy;
       const sellPrice = this.data[i].sell;
 
-      const profit = sellPrice - minPrice;
-      if (profit > maxProfit) {
-        maxProfit = profit;
+      const roi = sellPrice / minPrice;
+      if (roi > maxROI) {
+        maxROI = roi;
         buyPosition = currentBuyPosition;
         sellPosition = i;
       }

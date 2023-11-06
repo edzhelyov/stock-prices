@@ -26,14 +26,14 @@ describe('AppService', () => {
       expect(result['sellTime']).toEqual(4);
     });
 
-    it('returns the correct buy and sell when min buy is on the right of max sell', () => {
+    it('returns the buy and sell that will yield the most profit when the min buy is on the right of max sell', () => {
       service.updateData([
-          { buy: 20, sell: 30 },
-          { buy: 15, sell: 50 },
+          { buy: 12, sell: 20 },
+          { buy: 20, sell: 113 },
           { buy: 10, sell: 30 },
-          { buy: 18, sell: 45 },
-          { buy: 25, sell: 35 },
-          { buy: 30, sell: 10 },
+          { buy: 18, sell: 95 },
+          { buy: 25, sell: 40 },
+          { buy: 30, sell: 35 },
         ],
         0
       );
@@ -44,12 +44,30 @@ describe('AppService', () => {
       expect(result['sellTime']).toEqual(3);
     });
 
+    it('returns the max profit when the next buy/sell price is big enough to outperform the min buy price', () => {
+      service.updateData([
+          { buy: 12, sell: 20 },
+          { buy: 20, sell: 115 },
+          { buy: 10, sell: 30 },
+          { buy: 18, sell: 95 },
+          { buy: 25, sell: 40 },
+          { buy: 30, sell: 35 },
+        ],
+        0
+      );
+
+      const result = service.getMaxProfit(0, 5);
+
+      expect(result['buyTime']).toEqual(0);
+      expect(result['sellTime']).toEqual(1);
+    });
+
     it('returns the earliest and shortest time when there are multiple solutions', () => {
       service.updateData([
-          { buy: 20, sell: 20 },
-          { buy: 10, sell: 15 },
+          { buy: 12, sell: 20 },
+          { buy: 10, sell: 114 },
           { buy: 10, sell: 20 },
-          { buy: 18, sell: 20 },
+          { buy: 18, sell: 95 },
           { buy: 10, sell: 15 },
           { buy: 30, sell: 20 },
         ],
@@ -58,8 +76,8 @@ describe('AppService', () => {
 
       const result = service.getMaxProfit(0, 5);
 
-      expect(result['buyTime']).toEqual(1);
-      expect(result['sellTime']).toEqual(2);
+      expect(result['buyTime']).toEqual(0);
+      expect(result['sellTime']).toEqual(1);
     });
 
     it('returns the correct buy and sell for the specified period only', () => {

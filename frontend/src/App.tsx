@@ -73,8 +73,8 @@ function App() {
         <details>
           <summary><small>Click for hints about the current data</small></summary>
           <ul>
-            <li>Submit default values will return 12$ for buy and 97$ for sell.</li>
-            <li>Start time of 1672531210 will return 10$ for buy and 95$ for sell</li>
+            <li>Submit default values will return 10$ for buy and 95$ for sell.</li>
+            <li>End time of 1672531225 will return 12$ for buy and 97$ for sell</li>
             <li>Start time of 1672531258 will return no profitable situation.</li>
           </ul>
         </details>

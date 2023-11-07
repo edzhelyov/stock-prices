@@ -19,6 +19,7 @@ function App() {
     if (!validate()) {
       return;
     }
+    setError(null);
 
     const response = await fetch(`/api/max-profit?startTime=${startTime}&endTime=${endTime}`);
 
@@ -114,7 +115,7 @@ function App() {
         <div className="row mt-3">
           {data.shouldBuy ? (
             <div className="col-auto">
-              <p>
+              <p data-testid="profit">
                 Buy {shares} shares at {data.buyTime} for {data.buyPrice}$ and sell at {data.sellTime} for {data.sellPrice}$.
                 For a net profit of {profit}$.
               </p>

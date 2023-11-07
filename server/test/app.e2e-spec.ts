@@ -3,28 +3,29 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { AppService } from './../src/app.service';
+import { StaticData } from './../src/static-data';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let service: AppService;
+  let testService = new AppService([
+      {buy: 2, sell: 5},
+      {buy: 1, sell: 2},
+      {buy: 3, sell: 4},
+      {buy: 1, sell: 3}
+    ],
+    1672531200
+  );
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+    .overrideProvider(AppService)
+    .useValue(testService)
+    .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
-
-    service = moduleFixture.get<AppService>(AppService);
-    service.updateData([
-        {buy: 2, sell: 5},
-        {buy: 1, sell: 2},
-        {buy: 3, sell: 4},
-        {buy: 1, sell: 3}
-      ],
-      1672531200
-    )
   });
 
   describe(('/api/max-profit'), () => {

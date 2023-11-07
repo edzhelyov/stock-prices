@@ -6,22 +6,31 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The project has a backend using the [NestJS](nestjs.com) framework and a frontend part with React using the [Create React App](https://github.com/facebook/create-react-app).
 
 ## Architecture and design decisions
 
-All design decisions are influenced by the following two factors: I don't have any prior NestJS knowledge and I don't want to spend a lot of time on the task. With that in mind, I will try to understand the minimal context required to implement a basic NestJS, but some techniques might not be the best practices in the framework.
-Regardless, I want this code to be production ready, so it will follow proper separation of concerns.
+This is what I consider a production ready code, but with the following constraints:
 
-At the moment I use only e2e testing which gives us the best confidence the application is working and enable easy refactoring.
+* I don't have prior knowledge of NestJS and latest React eco-system.
+* I have spend the minimum amount of time to get the code fully functional and adhere as best as possible to the specific framework practices.
+* There are plenty of places that can be done better and more fit to the specific framework, but I have decided to stop there based on the previous two factors.
 
-## Installation
+I have skipped a real end to end tests with Playwright or something similar, but I decided that it is OK to do so. 
+
+The difference is only technical in the way how we would need to setup the backend app and it's data. The integration tests will be similar to the ones in the frontend, but with a real connection to the backend.
+
+## Backend
+
+Go to the `server` folder and run the following commands to start with the project:
+
+### Installation
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### Running the app
 
 ```bash
 # development
@@ -29,17 +38,57 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+It will start a web server on http://localhost:3000/.
+
+You can check the max profit funtionality at: http://localhost:3000/api/max-profit?startTime=1672531200&endTime=1672531260
+
+### Test
 
 ```bash
+# all tests
+$ npm run test:all
+
 # e2e tests
 $ npm run test:e2e
+
+# module tests
+$ npm run test
 
 # test coverage
 $ npm run test:cov
 ```
+
+## Frontend
+
+Go to the `frontend` folder and run the following commands to start with the project:
+
+### Installation
+
+```bash
+$ npm install
+```
+
+### Running the app 
+
+```bash
+$ npm run start
+```
+
+Runs the app in the development mode.\
+Open [http://localhost:4000](http://localhost:4000) to view it in the browser.
+
+It is automatically configured to proxy all missing requests to http://localhost:3000 where the backend app runs by default.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+### Test
+
+```bash
+$ npm run test
+```
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.

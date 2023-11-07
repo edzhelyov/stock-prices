@@ -56,7 +56,7 @@ describe('AppController (e2e)', () => {
       });
     });
 
-    xit('returns 400 when startTime or endTime is empty', () => {
+    it('returns 400 when startTime or endTime is empty', () => {
       return request(app.getHttpServer())
       .get(`/api/max-profit?startTime=&endTime=`)
       .expect(400)
